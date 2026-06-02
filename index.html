@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cierre de Caja Diario</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="summary-panel" aria-labelledby="app-title">
+        <p class="eyebrow">Calculadora diaria</p>
+        <h1 id="app-title">Cierre de caja</h1>
+        <p class="subtitle">Ingresá el total del día y obtené el reparto completo en segundos.</p>
+
+        <form class="calculator" id="calculator-form">
+          <label for="daily-income">Ingresos Totales del Día</label>
+          <div class="money-input">
+            <span aria-hidden="true">$</span>
+            <input
+              id="daily-income"
+              name="daily-income"
+              type="text"
+              inputmode="decimal"
+              placeholder="0,00"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <fieldset class="mode-toggle" aria-label="Modo de cálculo">
+            <legend>Modo de cálculo</legend>
+            <label class="switch-row" for="full-base-toggle">
+              <span>
+                <strong id="mode-title">30/70</strong>
+                <small id="mode-description">Se separa 30% para gastos y se reparte el 70% restante.</small>
+              </span>
+              <input id="full-base-toggle" type="checkbox" />
+              <span class="switch" aria-hidden="true">
+                <span class="switch-option switch-option-split">30/70</span>
+                <span class="switch-option switch-option-full">100%</span>
+              </span>
+            </label>
+          </fieldset>
+          <div class="actions">
+            <button class="primary-button" type="submit">Calcular</button>
+            <button class="ghost-button" type="button" id="clear-button">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="results-panel" aria-live="polite">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Resultado</p>
+            <h2>Desglose</h2>
+          </div>
+        </div>
+
+        <div class="total-card">
+          <span>Total ingresado</span>
+          <strong id="result-total">$ 0,00</strong>
+        </div>
+
+        <div class="cards-grid">
+          <article class="result-card accent-red">
+            <span>Gastos de Consultorio</span>
+            <strong id="result-expenses">$ 0,00</strong>
+            <small id="expenses-note">30% del ingreso total</small>
+          </article>
+          <article class="result-card accent-green">
+            <span id="net-label">Fondo Neto</span>
+            <strong id="result-net">$ 0,00</strong>
+            <small id="net-note">70% restante</small>
+          </article>
+          <article class="result-card">
+            <span>Fima</span>
+            <strong id="result-fima">$ 0,00</strong>
+            <small class="base-note">50% del Fondo Neto</small>
+          </article>
+          <article class="result-card">
+            <span>Ahorro General</span>
+            <strong id="result-general-savings">$ 0,00</strong>
+            <small class="base-note">20% del Fondo Neto</small>
+          </article>
+          <article class="result-card">
+            <span>Socio Principal (Bruto)</span>
+            <strong id="result-partner">$ 0,00</strong>
+            <small class="base-note">30% del Fondo Neto</small>
+          </article>
+          <article class="result-card accent-blue">
+            <span>Bolsillo Personal</span>
+            <strong id="result-pocket">$ 0,00</strong>
+            <small>80% del socio bruto</small>
+          </article>
+          <article class="result-card accent-gold">
+            <span>Ahorro Personal</span>
+            <strong id="result-personal-savings">$ 0,00</strong>
+            <small>20% del socio bruto</small>
+          </article>
+        </div>
+
+        <button class="copy-button" type="button" id="copy-button" disabled>
+          Copiar resumen para WhatsApp
+        </button>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
