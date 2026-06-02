@@ -93,8 +93,8 @@ function calculateBreakdown(total, mode = getCurrentMode()) {
   const fima = net * 0.5;
   const generalSavings = net * 0.2;
   const partner = net * 0.3;
-  const pocket = partner * 0.8;
-  const personalSavings = partner * 0.2;
+  const pocket = partner * 0.7;
+  const personalSavings = partner * 0.3;
 
   return {
     mode,
@@ -147,11 +147,11 @@ function buildClipboardText(breakdown) {
     "Distribución:",
     `🔹 Fima (50%): ${formatWhatsappMoney(breakdown.fima)}`,
     `🔹 Ahorro Gral (20%): ${formatWhatsappMoney(breakdown.generalSavings)}`,
-    `🔹 Personal (30%): ${formatWhatsappMoney(breakdown.partner)}`,
+    `🔹 Saldo Personal (30%): ${formatWhatsappMoney(breakdown.partner)}`,
     "",
     "Detalle Personal:",
-    `💸 Bolsillo: ${formatWhatsappMoney(breakdown.pocket)}`,
-    `🏦 Ahorro Personal: ${formatWhatsappMoney(breakdown.personalSavings)}`,
+    `💸 Bolsillo (70%): ${formatWhatsappMoney(breakdown.pocket)}`,
+    `🏦 Ahorro Personal (30%): ${formatWhatsappMoney(breakdown.personalSavings)}`,
   ];
 
   return lines.join("\n");
