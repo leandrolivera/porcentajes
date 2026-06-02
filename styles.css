@@ -317,9 +317,9 @@ button:disabled {
 }
 
 .total-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
   padding: 16px;
@@ -332,7 +332,9 @@ button:disabled {
 }
 
 .total-card strong {
-  font-size: clamp(1.3rem, 7vw, 2rem);
+  font-size: clamp(1.15rem, 5.8vw, 1.85rem);
+  text-align: right;
+  white-space: nowrap;
 }
 
 .cards-grid {
