@@ -147,9 +147,9 @@ function buildClipboardText(breakdown) {
     "Distribución:",
     `🔹 Fima (50%): ${formatWhatsappMoney(breakdown.fima)}`,
     `🔹 Ahorro Gral (20%): ${formatWhatsappMoney(breakdown.generalSavings)}`,
-    `🔹 Fefa (30%): ${formatWhatsappMoney(breakdown.partner)}`,
+    `🔹 Personal (30%): ${formatWhatsappMoney(breakdown.partner)}`,
     "",
-    "Detalle Fefa:",
+    "Detalle Personal:",
     `💸 Bolsillo: ${formatWhatsappMoney(breakdown.pocket)}`,
     `🏦 Ahorro Personal: ${formatWhatsappMoney(breakdown.personalSavings)}`,
   ];
@@ -245,3 +245,9 @@ copyButton.addEventListener("click", async () => {
 });
 
 renderMode();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}

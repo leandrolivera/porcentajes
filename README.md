@@ -19,6 +19,7 @@ WebApp de una sola pagina para organizar rapidamente el cierre diario de caja de
 - Formato de moneda local argentina.
 - Boton para limpiar el calculo.
 - Boton para copiar un resumen en texto plano, listo para pegar en WhatsApp.
+- Soporte PWA para instalarla como aplicacion en el celular.
 
 ## Como usar
 
@@ -36,3 +37,10 @@ Abrir `index.html` en cualquier navegador moderno.
 - Vanilla JavaScript
 
 No requiere instalacion de dependencias ni servidor para funcionar.
+
+## Instalacion como app
+
+Desde la version publicada en HTTPS, por ejemplo Cloudflare Pages:
+
+- En Android/Chrome: abrir el sitio y elegir `Instalar app` o `Agregar a pantalla principal`.
+- En iPhone/Safari: abrir el sitio, tocar compartir y elegir `Agregar a inicio`.
