@@ -53,6 +53,18 @@ function formatMoney(value) {
   return currency.format(value).replace(/\s/g, " ");
 }
 
+function formatWhatsappMoney(value) {
+  const hasDecimals = Math.round(value * 100) % 100 !== 0;
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: hasDecimals ? 2 : 0,
+    maximumFractionDigits: hasDecimals ? 2 : 0,
+  })
+    .format(value)
+    .replace(/\s/g, " ");
+}
+
 function parseAmount(value) {
   const raw = value.trim().replace(/\s/g, "");
   let normalized = raw;
@@ -121,21 +133,25 @@ function renderMode() {
 }
 
 function buildClipboardText(breakdown) {
-  const mode = modes[breakdown.mode];
+  const usesFullBase = breakdown.mode === "full";
+  const baseLabel = usesFullBase ? "Base a Repartir" : "Fondo Neto a Repartir";
   const lines = [
-    "Cierre de caja diario",
-    `Modo: ${mode.label}`,
-    `Ingresos Totales: ${formatMoney(breakdown.total)}`,
+    "💰 Cierre Diario",
     "",
-    `Gastos de Consultorio (${mode.expensesNote}): ${formatMoney(breakdown.expenses)}`,
-    `${mode.baseName} (${mode.netNote}): ${formatMoney(breakdown.net)}`,
+    `Ingreso Total: ${formatWhatsappMoney(breakdown.total)}`,
+    usesFullBase
+      ? `Gastos Consultorio: ${formatWhatsappMoney(breakdown.expenses)}`
+      : `Gastos Consultorio (30%): ${formatWhatsappMoney(breakdown.expenses)}`,
+    `${baseLabel}: ${formatWhatsappMoney(breakdown.net)}`,
     "",
-    `Fima (50% del ${mode.baseName}): ${formatMoney(breakdown.fima)}`,
-    `Ahorro General (20% del ${mode.baseName}): ${formatMoney(breakdown.generalSavings)}`,
-    `Socio Principal Bruto (30% del ${mode.baseName}): ${formatMoney(breakdown.partner)}`,
+    "Distribución:",
+    `🔹 Fima (50%): ${formatWhatsappMoney(breakdown.fima)}`,
+    `🔹 Ahorro Gral (20%): ${formatWhatsappMoney(breakdown.generalSavings)}`,
+    `🔹 Fefa (30%): ${formatWhatsappMoney(breakdown.partner)}`,
     "",
-    `Bolsillo Personal (80% del Socio): ${formatMoney(breakdown.pocket)}`,
-    `Ahorro Personal (20% del Socio): ${formatMoney(breakdown.personalSavings)}`,
+    "Detalle Fefa:",
+    `💸 Bolsillo: ${formatWhatsappMoney(breakdown.pocket)}`,
+    `🏦 Ahorro Personal: ${formatWhatsappMoney(breakdown.personalSavings)}`,
   ];
 
   return lines.join("\n");
