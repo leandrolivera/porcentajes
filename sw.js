@@ -1,4 +1,4 @@
-const CACHE_NAME = "cierre-caja-v1";
+const CACHE_NAME = "cierre-caja-v2";
 const ASSETS = [
   "./",
   "index.html",
@@ -37,8 +37,14 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(event.request)
+      .then((response) => {
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });

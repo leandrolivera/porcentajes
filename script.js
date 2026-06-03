@@ -191,6 +191,26 @@ async function copyText(text) {
   }
 }
 
+async function shareText(text) {
+  if (!navigator.share) {
+    await copyText(text);
+    showToast("Resumen copiado para compartir");
+    return;
+  }
+
+  try {
+    await navigator.share({
+      title: "Cierre Diario",
+      text,
+    });
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      await copyText(text);
+      showToast("No se pudo compartir. Resumen copiado.");
+    }
+  }
+}
+
 function resetCalculator() {
   latestBreakdown = null;
   input.value = "";
@@ -237,10 +257,9 @@ copyButton.addEventListener("click", async () => {
   const text = buildClipboardText(latestBreakdown);
 
   try {
-    await copyText(text);
-    showToast("Resultados copiados");
+    await shareText(text);
   } catch {
-    showToast("No se pudo copiar. Probá abrir la app con servidor local.");
+    showToast("No se pudo compartir ni copiar el resumen.");
   }
 });
 

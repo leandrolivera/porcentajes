@@ -18,7 +18,7 @@ WebApp de una sola pagina para organizar rapidamente el cierre diario de caja de
   - Ahorro Personal
 - Formato de moneda local argentina.
 - Boton para limpiar el calculo.
-- Boton para copiar un resumen en texto plano, listo para pegar en WhatsApp.
+- Boton para compartir un resumen en texto plano por WhatsApp, mensajes u otras apps.
 - Soporte PWA para instalarla como aplicacion en el celular.
 
 ## Como usar
@@ -28,7 +28,7 @@ Abrir `index.html` en cualquier navegador moderno.
 1. Ingresar el monto total del dia.
 2. Elegir el modo de calculo.
 3. Presionar `Calcular`.
-4. Revisar el desglose o copiar el resumen final.
+4. Revisar el desglose o compartir el resumen final.
 
 ## Tecnologias
 
