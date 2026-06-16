@@ -1,6 +1,6 @@
 const form = document.querySelector("#calculator-form");
 const input = document.querySelector("#daily-income");
-const fullBaseToggle = document.querySelector("#full-base-toggle");
+const modeInputs = document.querySelectorAll('input[name="calc-mode"]');
 const clearButton = document.querySelector("#clear-button");
 const copyButton = document.querySelector("#copy-button");
 const toast = document.querySelector("#toast");
@@ -26,11 +26,26 @@ let latestBreakdown = null;
 let toastTimer = null;
 
 const modes = {
-  split: {
-    label: "30/70",
+  split60: {
+    label: "60/40",
+    description: "Se separa 40% para gastos y se reparte el 60% restante.",
+    expensesNote: "40% del ingreso total",
+    netNote: "60% restante",
+    expensesRate: 0.4,
+    netRate: 0.6,
+    shareNetLabel: "60%",
+    shareExpenseLabel: "40%",
+    baseName: "Fondo Neto",
+  },
+  split70: {
+    label: "70/30",
     description: "Se separa 30% para gastos y se reparte el 70% restante.",
     expensesNote: "30% del ingreso total",
     netNote: "70% restante",
+    expensesRate: 0.3,
+    netRate: 0.7,
+    shareNetLabel: "70%",
+    shareExpenseLabel: "30%",
     baseName: "Fondo Neto",
   },
   full: {
@@ -38,6 +53,10 @@ const modes = {
     description: "No se separan gastos y el reparto usa el total ingresado.",
     expensesNote: "Sin separar gastos",
     netNote: "100% del ingreso total",
+    expensesRate: 0,
+    netRate: 1,
+    shareNetLabel: "100%",
+    shareExpenseLabel: "0%",
     baseName: "Ingreso Total",
   },
 };
@@ -83,13 +102,14 @@ function parseAmount(value) {
 }
 
 function getCurrentMode() {
-  return fullBaseToggle.checked ? "full" : "split";
+  const selectedInput = Array.from(modeInputs).find((inputNode) => inputNode.checked);
+  return selectedInput ? selectedInput.value : "split70";
 }
 
 function calculateBreakdown(total, mode = getCurrentMode()) {
-  const usesFullBase = mode === "full";
-  const expenses = usesFullBase ? 0 : total * 0.3;
-  const net = usesFullBase ? total : total * 0.7;
+  const modeConfig = modes[mode];
+  const expenses = total * modeConfig.expensesRate;
+  const net = total * modeConfig.netRate;
   const fima = net * 0.5;
   const generalSavings = net * 0.2;
   const partner = net * 0.3;
@@ -133,6 +153,7 @@ function renderMode() {
 }
 
 function buildClipboardText(breakdown) {
+  const mode = modes[breakdown.mode];
   const usesFullBase = breakdown.mode === "full";
   const baseLabel = usesFullBase ? "Base a Repartir" : "Fondo Neto a Repartir";
   const lines = [
@@ -141,7 +162,7 @@ function buildClipboardText(breakdown) {
     `Ingreso Total: ${formatWhatsappMoney(breakdown.total)}`,
     usesFullBase
       ? `Gastos Consultorio: ${formatWhatsappMoney(breakdown.expenses)}`
-      : `Gastos Consultorio (30%): ${formatWhatsappMoney(breakdown.expenses)}`,
+      : `Gastos Consultorio (${mode.shareExpenseLabel}): ${formatWhatsappMoney(breakdown.expenses)}`,
     `${baseLabel}: ${formatWhatsappMoney(breakdown.net)}`,
     "",
     "Distribución:",
@@ -235,16 +256,18 @@ form.addEventListener("submit", (event) => {
   copyButton.disabled = false;
 });
 
-fullBaseToggle.addEventListener("change", () => {
-  renderMode();
+modeInputs.forEach((modeInput) => {
+  modeInput.addEventListener("change", () => {
+    renderMode();
 
-  if (!latestBreakdown) {
-    renderResults(calculateBreakdown(0));
-    return;
-  }
+    if (!latestBreakdown) {
+      renderResults(calculateBreakdown(0));
+      return;
+    }
 
-  latestBreakdown = calculateBreakdown(latestBreakdown.total);
-  renderResults(latestBreakdown);
+    latestBreakdown = calculateBreakdown(latestBreakdown.total);
+    renderResults(latestBreakdown);
+  });
 });
 
 clearButton.addEventListener("click", resetCalculator);

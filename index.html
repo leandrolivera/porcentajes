@@ -39,17 +39,26 @@
           </div>
           <fieldset class="mode-toggle" aria-label="Modo de cálculo">
             <legend>Modo de cálculo</legend>
-            <label class="switch-row" for="full-base-toggle">
-              <span>
-                <strong id="mode-title">30/70</strong>
+            <div class="mode-panel">
+              <div class="mode-copy">
+                <strong id="mode-title">70/30</strong>
                 <small id="mode-description">Se separa 30% para gastos y se reparte el 70% restante.</small>
-              </span>
-              <input id="full-base-toggle" type="checkbox" />
-              <span class="switch" aria-hidden="true">
-                <span class="switch-option switch-option-split">30/70</span>
-                <span class="switch-option switch-option-full">100%</span>
-              </span>
-            </label>
+              </div>
+              <div class="mode-options" role="radiogroup" aria-label="Seleccion de reparto">
+                <label class="mode-option">
+                  <input type="radio" name="calc-mode" value="split60" />
+                  <span>60/40</span>
+                </label>
+                <label class="mode-option">
+                  <input type="radio" name="calc-mode" value="split70" checked />
+                  <span>70/30</span>
+                </label>
+                <label class="mode-option">
+                  <input type="radio" name="calc-mode" value="full" />
+                  <span>100%</span>
+                </label>
+              </div>
+            </div>
           </fieldset>
           <div class="actions">
             <button class="primary-button" type="submit">Calcular</button>

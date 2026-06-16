@@ -145,100 +145,63 @@ h2 {
   font-weight: 800;
 }
 
-.switch-row {
+.mode-panel {
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
   gap: 14px;
-  min-height: 74px;
-  padding: 13px 14px;
-  cursor: pointer;
+  padding: 13px 14px 14px;
 }
 
-.switch-row span:first-child {
-  min-width: 0;
-}
-
-.switch-row strong {
+.mode-copy strong {
   display: block;
   margin-bottom: 3px;
   color: var(--text);
   font-size: 1rem;
 }
 
-.switch-row small {
+.mode-copy small {
   display: block;
   color: var(--muted);
   line-height: 1.35;
 }
 
-.switch-row input {
+.mode-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mode-option {
+  position: relative;
+  min-height: 46px;
+}
+
+.mode-option input {
   position: absolute;
+  inset: 0;
   opacity: 0;
   pointer-events: none;
 }
 
-.switch {
-  position: relative;
+.mode-option span {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  width: 132px;
-  height: 42px;
+  place-items: center;
+  min-height: 46px;
   border: 1px solid #3a4150;
   border-radius: 8px;
   background: #0d0e11;
-  padding: 4px;
-  transition: border-color 160ms ease, background 160ms ease;
-}
-
-.switch::after {
-  content: "";
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: calc(50% - 4px);
-  height: calc(100% - 8px);
-  border-radius: 6px;
-  background: var(--primary);
-  transition: transform 160ms ease, background 160ms ease;
-}
-
-.switch-option {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  height: 100%;
   color: #7f8898;
   font-size: 0.86rem;
   font-weight: 900;
-  transition: color 160ms ease;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
 }
 
-.switch-option-split {
-  color: #07120d;
-}
-
-.switch-row input:checked + .switch {
+.mode-option input:checked + span {
   border-color: var(--primary);
-  background: rgba(57, 217, 138, 0.18);
-}
-
-.switch-row input:checked + .switch::after {
-  transform: translateX(100%);
   background: var(--primary);
-}
-
-.switch-row input:checked + .switch .switch-option-split {
-  color: #7f8898;
-}
-
-.switch-row input:checked + .switch .switch-option-full {
   color: #07120d;
 }
 
-.switch-row input:focus-visible + .switch {
+.mode-option input:focus-visible + span {
   box-shadow: 0 0 0 4px rgba(57, 217, 138, 0.14);
 }
 
