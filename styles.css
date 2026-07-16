@@ -312,6 +312,10 @@ button:disabled {
   padding: 16px;
 }
 
+.result-card.is-hidden {
+  display: none;
+}
+
 .result-card::before {
   content: "";
   position: absolute;

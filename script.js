@@ -6,6 +6,7 @@ const copyButton = document.querySelector("#copy-button");
 const toast = document.querySelector("#toast");
 const modeTitle = document.querySelector("#mode-title");
 const modeDescription = document.querySelector("#mode-description");
+const expensesCard = document.querySelector("#expenses-card");
 const expensesLabel = document.querySelector("#expenses-label");
 const netLabel = document.querySelector("#net-label");
 const expensesNote = document.querySelector("#expenses-note");
@@ -145,8 +146,10 @@ function renderResults(breakdown) {
 
 function renderMode() {
   const mode = modes[getCurrentMode()];
+  const usesFullBase = getCurrentMode() === "full";
   modeTitle.textContent = mode.label;
   modeDescription.textContent = mode.description;
+  expensesCard.classList.toggle("is-hidden", usesFullBase);
   expensesLabel.textContent = mode.expensesLabel;
   netLabel.textContent = mode.baseName;
   expensesNote.textContent = mode.expensesNote;
@@ -166,9 +169,6 @@ function buildClipboardText(breakdown) {
     "💰 Cierre Diario",
     "",
     `Ingreso Total: ${formatWhatsappMoney(breakdown.total)}`,
-    usesFullBase
-      ? `${shareExpenseLabel}: ${formatWhatsappMoney(breakdown.expenses)}`
-      : `${shareExpenseLabel} (${mode.shareExpenseLabel}): ${formatWhatsappMoney(breakdown.expenses)}`,
     `${baseLabel}: ${formatWhatsappMoney(breakdown.net)}`,
     "",
     "Distribución:",
@@ -180,6 +180,14 @@ function buildClipboardText(breakdown) {
     `💸 Bolsillo (70%): ${formatWhatsappMoney(breakdown.pocket)}`,
     `🏦 Ahorro Personal (30%): ${formatWhatsappMoney(breakdown.personalSavings)}`,
   ];
+
+  if (!usesFullBase) {
+    lines.splice(
+      3,
+      0,
+      `${shareExpenseLabel} (${mode.shareExpenseLabel}): ${formatWhatsappMoney(breakdown.expenses)}`
+    );
+  }
 
   return lines.join("\n");
 }
