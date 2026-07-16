@@ -6,6 +6,7 @@ const copyButton = document.querySelector("#copy-button");
 const toast = document.querySelector("#toast");
 const modeTitle = document.querySelector("#mode-title");
 const modeDescription = document.querySelector("#mode-description");
+const expensesLabel = document.querySelector("#expenses-label");
 const netLabel = document.querySelector("#net-label");
 const expensesNote = document.querySelector("#expenses-note");
 const netNote = document.querySelector("#net-note");
@@ -28,18 +29,20 @@ let toastTimer = null;
 const modes = {
   split60: {
     label: "60/40",
-    description: "Se separa 40% para gastos y se reparte el 60% restante.",
-    expensesNote: "40% del ingreso total",
-    netNote: "60% restante",
-    expensesRate: 0.4,
-    netRate: 0.6,
-    shareNetLabel: "60%",
-    shareExpenseLabel: "40%",
+    description: "Se separa 60% para reposicion y se reparte el 40% restante.",
+    expensesLabel: "Reposicion",
+    expensesNote: "60% del ingreso total",
+    netNote: "40% restante",
+    expensesRate: 0.6,
+    netRate: 0.4,
+    shareNetLabel: "40%",
+    shareExpenseLabel: "60%",
     baseName: "Fondo Neto",
   },
   split70: {
     label: "70/30",
     description: "Se separa 30% para gastos y se reparte el 70% restante.",
+    expensesLabel: "Gastos de Consultorio",
     expensesNote: "30% del ingreso total",
     netNote: "70% restante",
     expensesRate: 0.3,
@@ -51,6 +54,7 @@ const modes = {
   full: {
     label: "100%",
     description: "No se separan gastos y el reparto usa el total ingresado.",
+    expensesLabel: "Gastos de Consultorio",
     expensesNote: "Sin separar gastos",
     netNote: "100% del ingreso total",
     expensesRate: 0,
@@ -143,6 +147,7 @@ function renderMode() {
   const mode = modes[getCurrentMode()];
   modeTitle.textContent = mode.label;
   modeDescription.textContent = mode.description;
+  expensesLabel.textContent = mode.expensesLabel;
   netLabel.textContent = mode.baseName;
   expensesNote.textContent = mode.expensesNote;
   netNote.textContent = mode.netNote;
@@ -156,13 +161,14 @@ function buildClipboardText(breakdown) {
   const mode = modes[breakdown.mode];
   const usesFullBase = breakdown.mode === "full";
   const baseLabel = usesFullBase ? "Base a Repartir" : "Fondo Neto a Repartir";
+  const shareExpenseLabel = breakdown.mode === "split60" ? "Reposicion" : "Gastos Consultorio";
   const lines = [
     "💰 Cierre Diario",
     "",
     `Ingreso Total: ${formatWhatsappMoney(breakdown.total)}`,
     usesFullBase
-      ? `Gastos Consultorio: ${formatWhatsappMoney(breakdown.expenses)}`
-      : `Gastos Consultorio (${mode.shareExpenseLabel}): ${formatWhatsappMoney(breakdown.expenses)}`,
+      ? `${shareExpenseLabel}: ${formatWhatsappMoney(breakdown.expenses)}`
+      : `${shareExpenseLabel} (${mode.shareExpenseLabel}): ${formatWhatsappMoney(breakdown.expenses)}`,
     `${baseLabel}: ${formatWhatsappMoney(breakdown.net)}`,
     "",
     "Distribución:",
