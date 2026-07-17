@@ -1,4 +1,5 @@
 const form = document.querySelector("#calculator-form");
+const titleInput = document.querySelector("#daily-title");
 const input = document.querySelector("#daily-income");
 const modeInputs = document.querySelectorAll('input[name="calc-mode"]');
 const clearButton = document.querySelector("#clear-button");
@@ -165,6 +166,7 @@ function buildClipboardText(breakdown) {
   const usesFullBase = breakdown.mode === "full";
   const baseLabel = usesFullBase ? "Base a Repartir" : "Fondo Neto a Repartir";
   const shareExpenseLabel = breakdown.mode === "split60" ? "Reposicion" : "Gastos Consultorio";
+  const customTitle = titleInput.value.trim();
   const lines = [
     "💰 Cierre Diario",
     "",
@@ -181,9 +183,13 @@ function buildClipboardText(breakdown) {
     `🏦 Ahorro Personal (30%): ${formatWhatsappMoney(breakdown.personalSavings)}`,
   ];
 
+  if (customTitle) {
+    lines.splice(1, 0, `ðŸ“ ${customTitle}`);
+  }
+
   if (!usesFullBase) {
     lines.splice(
-      3,
+      customTitle ? 4 : 3,
       0,
       `${shareExpenseLabel} (${mode.shareExpenseLabel}): ${formatWhatsappMoney(breakdown.expenses)}`
     );
@@ -248,10 +254,11 @@ async function shareText(text) {
 
 function resetCalculator() {
   latestBreakdown = null;
+  titleInput.value = "";
   input.value = "";
   renderResults(calculateBreakdown(0, getCurrentMode()));
   copyButton.disabled = true;
-  input.focus();
+  titleInput.focus();
 }
 
 form.addEventListener("submit", (event) => {

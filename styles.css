@@ -91,6 +91,30 @@ h2 {
   font-weight: 700;
 }
 
+.text-input {
+  width: 100%;
+  min-height: 54px;
+  margin-bottom: 14px;
+  border: 1px solid #3a4150;
+  border-radius: 8px;
+  outline: 0;
+  background: #0d0e11;
+  color: var(--text);
+  padding: 0 16px;
+  font-size: 1rem;
+  font-weight: 650;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.text-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(57, 217, 138, 0.14);
+}
+
+.text-input::placeholder {
+  color: #4c5360;
+}
+
 .money-input {
   display: grid;
   grid-template-columns: auto 1fr;
