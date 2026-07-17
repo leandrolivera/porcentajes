@@ -171,7 +171,7 @@ function buildClipboardText(breakdown) {
     "💰 Cierre Diario",
     "",
     `Ingreso Total: ${formatWhatsappMoney(breakdown.total)}`,
-    `${baseLabel}: ${formatWhatsappMoney(breakdown.net)}`,
+    `${baseLabel} (${mode.shareNetLabel}): ${formatWhatsappMoney(breakdown.net)}`,
     "",
     "Distribución:",
     `🔹 Fima (50%): ${formatWhatsappMoney(breakdown.fima)}`,
@@ -184,7 +184,7 @@ function buildClipboardText(breakdown) {
   ];
 
   if (customTitle) {
-    lines.splice(1, 0, `ðŸ“ ${customTitle}`);
+    lines.splice(1, 0, `*${customTitle}*`);
   }
 
   if (!usesFullBase) {
