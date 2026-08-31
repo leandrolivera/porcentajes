@@ -20,6 +20,7 @@ const resultNodes = {
   net: document.querySelector("#result-net"),
   fima: document.querySelector("#result-fima"),
   generalSavings: document.querySelector("#result-general-savings"),
+  travelSavings: document.querySelector("#result-travel-savings"),
   partner: document.querySelector("#result-partner"),
   pocket: document.querySelector("#result-pocket"),
   personalSavings: document.querySelector("#result-personal-savings"),
@@ -118,7 +119,8 @@ function calculateBreakdown(total, mode = getCurrentMode()) {
   const net = total * modeConfig.netRate;
   const fima = net * 0.5;
   const generalSavings = net * 0.2;
-  const partner = net * 0.3;
+  const travelSavings = net * 0.1;
+  const partner = net * 0.2;
   const pocket = partner * 0.7;
   const personalSavings = partner * 0.3;
 
@@ -129,6 +131,7 @@ function calculateBreakdown(total, mode = getCurrentMode()) {
     net,
     fima,
     generalSavings,
+    travelSavings,
     partner,
     pocket,
     personalSavings,
@@ -176,7 +179,8 @@ function buildClipboardText(breakdown) {
     "Distribución:",
     `🔹 Fima (50%): ${formatWhatsappMoney(breakdown.fima)}`,
     `🔹 Ahorro Gral (20%): ${formatWhatsappMoney(breakdown.generalSavings)}`,
-    `🔹 Saldo Personal (30%): ${formatWhatsappMoney(breakdown.partner)}`,
+    `🔹 Ahorro Viajes (10%): ${formatWhatsappMoney(breakdown.travelSavings)}`,
+    `🔹 Saldo Personal (20%): ${formatWhatsappMoney(breakdown.partner)}`,
     "",
     "Detalle Personal:",
     `💸 Bolsillo (70%): ${formatWhatsappMoney(breakdown.pocket)}`,
