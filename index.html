@@ -24,6 +24,25 @@
         <p class="subtitle">Ingresá el total del día y obtené el reparto completo en segundos.</p>
 
         <form class="calculator" id="calculator-form">
+          <label for="loaded-by">¿Quién carga el cálculo?</label>
+          <select id="loaded-by" name="loaded-by" class="text-input select-input" required>
+            <option value="" disabled selected>Elegí una opción</option>
+            <option value="Fefa">Fefa</option>
+            <option value="Leo">Leo</option>
+            <option value="other">Otro</option>
+          </select>
+          <div class="other-name is-hidden" id="other-name-field">
+            <label for="other-name">Nombre</label>
+            <input
+              id="other-name"
+              name="other-name"
+              class="text-input"
+              type="text"
+              maxlength="40"
+              placeholder="Escribí el nombre"
+              autocomplete="off"
+            />
+          </div>
           <label for="daily-title">Titulo opcional</label>
           <input
             id="daily-title"

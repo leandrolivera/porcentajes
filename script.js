@@ -1,4 +1,7 @@
 const form = document.querySelector("#calculator-form");
+const loadedBySelect = document.querySelector("#loaded-by");
+const otherNameField = document.querySelector("#other-name-field");
+const otherNameInput = document.querySelector("#other-name");
 const titleInput = document.querySelector("#daily-title");
 const input = document.querySelector("#daily-income");
 const modeInputs = document.querySelectorAll('input[name="calc-mode"]');
@@ -108,6 +111,50 @@ function parseAmount(value) {
   return Number(normalized);
 }
 
+const LOADED_BY_KEY = "cierre-caja:loaded-by";
+const OTHER_NAME_KEY = "cierre-caja:other-name";
+
+function getLoadedBy() {
+  if (loadedBySelect.value === "other") {
+    return otherNameInput.value.trim();
+  }
+
+  return loadedBySelect.value;
+}
+
+function renderLoadedBy() {
+  const isOther = loadedBySelect.value === "other";
+  otherNameField.classList.toggle("is-hidden", !isOther);
+  otherNameInput.required = isOther;
+}
+
+function saveLoadedBy() {
+  try {
+    localStorage.setItem(LOADED_BY_KEY, loadedBySelect.value);
+    localStorage.setItem(OTHER_NAME_KEY, otherNameInput.value.trim());
+  } catch {
+    // Sin almacenamiento disponible: no se recuerda la eleccion.
+  }
+}
+
+function restoreLoadedBy() {
+  try {
+    const savedValue = localStorage.getItem(LOADED_BY_KEY);
+    const isKnownOption = Array.from(loadedBySelect.options).some(
+      (option) => option.value && option.value === savedValue
+    );
+
+    if (isKnownOption) {
+      loadedBySelect.value = savedValue;
+      otherNameInput.value = localStorage.getItem(OTHER_NAME_KEY) || "";
+    }
+  } catch {
+    // Sin almacenamiento disponible: se arranca sin eleccion.
+  }
+
+  renderLoadedBy();
+}
+
 function getCurrentMode() {
   const selectedInput = Array.from(modeInputs).find((inputNode) => inputNode.checked);
   return selectedInput ? selectedInput.value : "split70";
@@ -170,10 +217,20 @@ function buildClipboardText(breakdown) {
   const baseLabel = usesFullBase ? "Base a Repartir" : "Fondo Neto a Repartir";
   const shareExpenseLabel = breakdown.mode === "split60" ? "Reposicion" : "Gastos Consultorio";
   const customTitle = titleInput.value.trim();
+  const loadedBy = getLoadedBy();
   const lines = [
     "💰 Cierre Diario",
+    ...(customTitle ? [`*${customTitle}*`] : []),
+    ...(loadedBy ? [`👤 Cargado por: ${loadedBy}`] : []),
     "",
     `Ingreso Total: ${formatWhatsappMoney(breakdown.total)}`,
+    ...(usesFullBase
+      ? []
+      : [
+          `${shareExpenseLabel} (${mode.shareExpenseLabel}): ${formatWhatsappMoney(
+            breakdown.expenses
+          )}`,
+        ]),
     `${baseLabel} (${mode.shareNetLabel}): ${formatWhatsappMoney(breakdown.net)}`,
     "",
     "Distribución:",
@@ -186,18 +243,6 @@ function buildClipboardText(breakdown) {
     `💸 Bolsillo (70%): ${formatWhatsappMoney(breakdown.pocket)}`,
     `🏦 Ahorro Personal (30%): ${formatWhatsappMoney(breakdown.personalSavings)}`,
   ];
-
-  if (customTitle) {
-    lines.splice(1, 0, `*${customTitle}*`);
-  }
-
-  if (!usesFullBase) {
-    lines.splice(
-      customTitle ? 4 : 3,
-      0,
-      `${shareExpenseLabel} (${mode.shareExpenseLabel}): ${formatWhatsappMoney(breakdown.expenses)}`
-    );
-  }
 
   return lines.join("\n");
 }
@@ -268,6 +313,20 @@ function resetCalculator() {
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
+  if (!loadedBySelect.value) {
+    showToast("Elegí quién carga el cálculo");
+    loadedBySelect.focus();
+    return;
+  }
+
+  if (loadedBySelect.value === "other" && !otherNameInput.value.trim()) {
+    showToast("Escribí el nombre de quién carga");
+    otherNameInput.focus();
+    return;
+  }
+
+  saveLoadedBy();
+
   const total = parseAmount(input.value);
 
   if (!Number.isFinite(total) || total < 0) {
@@ -295,6 +354,14 @@ modeInputs.forEach((modeInput) => {
   });
 });
 
+loadedBySelect.addEventListener("change", () => {
+  renderLoadedBy();
+
+  if (loadedBySelect.value === "other") {
+    otherNameInput.focus();
+  }
+});
+
 clearButton.addEventListener("click", resetCalculator);
 
 copyButton.addEventListener("click", async () => {
@@ -312,6 +379,7 @@ copyButton.addEventListener("click", async () => {
 });
 
 renderMode();
+restoreLoadedBy();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
