@@ -45,16 +45,16 @@ const modes = {
     shareExpenseLabel: "60%",
     baseName: "Fondo Neto",
   },
-  split70: {
-    label: "70/30",
-    description: "Se separa 30% para gastos y se reparte el 70% restante.",
+  split75: {
+    label: "75/25",
+    description: "Se separa 25% para gastos y se reparte el 75% restante.",
     expensesLabel: "Gastos de Consultorio",
-    expensesNote: "30% del ingreso total",
-    netNote: "70% restante",
-    expensesRate: 0.3,
-    netRate: 0.7,
-    shareNetLabel: "70%",
-    shareExpenseLabel: "30%",
+    expensesNote: "25% del ingreso total",
+    netNote: "75% restante",
+    expensesRate: 0.25,
+    netRate: 0.75,
+    shareNetLabel: "75%",
+    shareExpenseLabel: "25%",
     baseName: "Fondo Neto",
   },
   full: {
@@ -157,7 +157,7 @@ function restoreLoadedBy() {
 
 function getCurrentMode() {
   const selectedInput = Array.from(modeInputs).find((inputNode) => inputNode.checked);
-  return selectedInput ? selectedInput.value : "split70";
+  return selectedInput ? selectedInput.value : "split75";
 }
 
 function calculateBreakdown(total, mode = getCurrentMode()) {

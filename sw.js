@@ -1,4 +1,4 @@
-const CACHE_NAME = "cierre-caja-v3";
+const CACHE_NAME = "cierre-caja-v4";
 const ASSETS = [
   "./",
   "index.html",

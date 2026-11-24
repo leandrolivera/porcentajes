@@ -9,7 +9,7 @@ WebApp de una sola pagina para organizar rapidamente el cierre diario de caja de
 - Ingreso principal para cargar los ingresos totales del dia.
 - Selector de modo de calculo:
   - `60/40`: separa 60% para Reposicion (ropa) y reparte el 40% restante.
-  - `70/30`: separa 30% para Gastos de Consultorio y reparte el 70% restante.
+  - `75/25`: separa 25% para Gastos de Consultorio y reparte el 75% restante.
   - `100%`: reparte sobre el total ingresado, sin separar gastos (sueldo).
 - Reparto del fondo neto:
   - Fima: 50%
